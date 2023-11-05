@@ -29,13 +29,16 @@ class TimerCubit extends Cubit<TimerState> {
         if (_currentTimer > 0) {
           _currentTimer--;
           displayCurrentTimer();
-          print('time: $_currentTimer');
+       
           emit(DisplayTimerState(displayCurrentTimer()));
+        } else {
+          _timer?.cancel();
+          _timerRunning = false;
         }
       });
       emit(const UpdateTimerState());
     } else {
-      print('stop');
+    
       _timerRunning = false;
       _timer?.cancel();
       emit(const UpdateTimerState());
