@@ -7,18 +7,30 @@ class TimerControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-      IconButton(onPressed: () {}, icon: const Icon(Icons.replay)),
-      IconButton(
-          onPressed: () {
-            context.read<TimerCubit>().startTimer();
-          },
-          icon: const Icon(
-            Icons.play_arrow,
-            size: 40,
-          )),
-      IconButton(onPressed: () {}, icon: const Icon(Icons.fast_forward)),
-    ]));
+    return BlocBuilder<TimerCubit, TimerState>(
+      builder: (context, state) {
+        var timer = BlocProvider.of<TimerCubit>(context);
+        return Expanded(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+              IconButton(
+                  onPressed: () {
+                    timer.resetTimer;
+                  },
+                  icon: const Icon(Icons.replay)),
+              IconButton(
+                  onPressed: () {
+                    context.read<TimerCubit>().startTimer;
+                  },
+                  icon: Icon(
+                    timer.isPlaying ? Icons.pause : Icons.play_arrow,
+                    size: 40,
+                  )),
+              IconButton(
+                  onPressed: () {}, icon: const Icon(Icons.fast_forward)),
+            ]));
+      },
+    );
   }
 }

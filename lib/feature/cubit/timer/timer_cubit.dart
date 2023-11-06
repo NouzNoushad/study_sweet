@@ -6,42 +6,59 @@ import 'package:equatable/equatable.dart';
 part 'timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
-  TimerCubit() : super(TimerInitial());
+  TimerCubit() : super(const UpdateTimerState('00:30', 01 * 30, false, 1));
 
   Timer? _timer;
-  bool _timerRunning = false;
-  int _currentTimer = 3000;
+  bool _isPlaying = false;
+  int _currentTime = 01 * 30;
+  String _currentTimeValue = '00:30';
+  int _session = 1;
 
-  bool get timerRunning => _timerRunning;
-  int get currentTimer => _currentTimer;
+  Timer get timer => _timer!;
+  bool get isPlaying => _isPlaying;
+  int get currentTime => _currentTime;
+  int get session => _session;
+  String get currentTimeValue => _currentTimeValue;
 
-  String displayCurrentTimer() {
-    int minutes = _currentTimer ~/ 60;
-    int seconds = _currentTimer % 60;
-    return '$minutes:${seconds.toString().padLeft(2, '0')}';
+  void get startTimer => _startTimer();
+  void get resetTimer => _resetTimer();
+
+  _runTimer(int time) {
+    if (_currentTime >= 0) {
+      var currentTimeInMinutes = _currentTime ~/ 60;
+      var currentTimeInSeconds = _currentTime % 60;
+      _currentTime--;
+      _currentTimeValue =
+          '${currentTimeInMinutes.toString().padLeft(2, '0')}:${currentTimeInSeconds.toString().padLeft(2, '0')}';
+      emit(UpdateTimerState(
+          _currentTimeValue, _currentTime, _isPlaying, _session));
+    } else {
+      if (_session < 4) {
+        _currentTime = 01 * 30;
+        _session++;
+      }
+    }
   }
 
-  startTimer() {
-    if (!_timerRunning) {
-      _timerRunning = true;
-      print('start');
+  void _startTimer() {
+    if (!_isPlaying) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (_currentTimer > 0) {
-          _currentTimer--;
-          displayCurrentTimer();
-       
-          emit(DisplayTimerState(displayCurrentTimer()));
-        } else {
-          _timer?.cancel();
-          _timerRunning = false;
-        }
+        _runTimer(_currentTime);
       });
-      emit(const UpdateTimerState());
+      _isPlaying = true;
     } else {
-    
-      _timerRunning = false;
       _timer?.cancel();
-      emit(const UpdateTimerState());
+      _isPlaying = false;
+      emit(UpdateTimerState(
+          _currentTimeValue, _currentTime, _isPlaying, _session));
     }
+  }
+
+  void _resetTimer() {
+    _timer?.cancel();
+    _currentTimeValue = '00:30';
+    _isPlaying = false;
+    emit(UpdateTimerState(
+        _currentTimeValue, _currentTime, _isPlaying, _session));
   }
 }

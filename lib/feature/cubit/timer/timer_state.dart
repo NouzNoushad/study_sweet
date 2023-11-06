@@ -7,19 +7,14 @@ sealed class TimerState extends Equatable {
   List<Object> get props => [];
 }
 
-final class TimerInitial extends TimerState {}
-
 class UpdateTimerState extends TimerState {
-  const UpdateTimerState();
+  final String currentTimeValue;
+  final int currentTime;
+  final bool isPlaying;
+  final int session;
+  const UpdateTimerState(
+      this.currentTimeValue, this.currentTime, this.isPlaying, this.session);
 
   @override
-  List<Object> get props => [];
-}
-
-class DisplayTimerState extends TimerState {
-  final String displayTime;
-  const DisplayTimerState(this.displayTime);
-
-  @override
-  List<Object> get props => [displayTime];
+  List<Object> get props => [currentTimeValue, currentTime, isPlaying, session];
 }
