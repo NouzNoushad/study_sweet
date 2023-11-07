@@ -46,18 +46,18 @@ class StudyTimer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(studyStatus,
+                  Text(studyStatus.toUpperCase(),
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
-                          )),
+                          fontWeight: FontWeight.w500, letterSpacing: 1)),
                   Text(displayTime,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(fontWeight: FontWeight.bold, fontSize: 50)),
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontFamily: 'Pacifico',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 50)),
                   Text('$session : 4',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             fontWeight: FontWeight.w500,
+                            fontFamily: 'Pacifico',
                           )),
                 ],
               ),

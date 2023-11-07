@@ -5,7 +5,7 @@ class AppTheme {
   static final lightTheme = ThemeData(
       colorSchemeSeed: ColorPicker.seedColor,
       brightness: Brightness.light,
-      fontFamily: 'Pacifico',
+      // fontFamily: 'Pacifico',
       appBarTheme: const AppBarTheme(
         backgroundColor: ColorPicker.lightBackgroundColor,
       ),
@@ -13,7 +13,7 @@ class AppTheme {
   static final darkTheme = ThemeData(
       colorSchemeSeed: ColorPicker.seedColor,
       brightness: Brightness.dark,
-      fontFamily: 'Pacifico',
+      // fontFamily: 'Pacifico',
       appBarTheme: const AppBarTheme(
         backgroundColor: ColorPicker.darkBackgroundColor,
       ),

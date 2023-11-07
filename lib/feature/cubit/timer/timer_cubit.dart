@@ -7,14 +7,14 @@ part 'timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
   TimerCubit()
-      : super(const UpdateTimerState('00:30', 2 * 60, false, 1, 2, 'Study'));
+      : super(const UpdateTimerState('02:00', 2 * 60, false, 1, 2, 'Study'));
 
   Timer? _timer;
   bool _isPlaying = false;
   bool _isBreakTime = false;
   int _currentTime = 2 * 60;
   int _progressTime = 2;
-  String _currentTimeValue = '00:30';
+  String _currentTimeValue = '02:00';
   int _session = 1;
 
   Timer get timer => _timer!;

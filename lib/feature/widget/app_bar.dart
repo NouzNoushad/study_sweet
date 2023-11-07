@@ -9,7 +9,9 @@ AppBar promodoroAppBar(
     AppBar(
       title: Text(
         appTitle,
-        style: Theme.of(context).textTheme.titleLarge,
+        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+              fontFamily: 'Pacifico',
+            ),
       ),
       automaticallyImplyLeading: leading,
       elevation: 0.0,
