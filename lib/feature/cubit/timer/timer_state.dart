@@ -12,9 +12,18 @@ class UpdateTimerState extends TimerState {
   final int currentTime;
   final bool isPlaying;
   final int session;
-  const UpdateTimerState(
-      this.currentTimeValue, this.currentTime, this.isPlaying, this.session);
+  final int progressTime;
+  final String studyStatus;
+  const UpdateTimerState(this.currentTimeValue, this.currentTime,
+      this.isPlaying, this.session, this.progressTime, this.studyStatus);
 
   @override
-  List<Object> get props => [currentTimeValue, currentTime, isPlaying, session];
+  List<Object> get props => [
+        currentTimeValue,
+        currentTime,
+        isPlaying,
+        session,
+        progressTime,
+        studyStatus
+      ];
 }

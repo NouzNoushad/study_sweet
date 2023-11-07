@@ -28,7 +28,10 @@ class TimerControls extends StatelessWidget {
                     size: 40,
                   )),
               IconButton(
-                  onPressed: () {}, icon: const Icon(Icons.fast_forward)),
+                  onPressed: () {
+                    timer.skipTimer;
+                  },
+                  icon: const Icon(Icons.fast_forward)),
             ]));
       },
     );

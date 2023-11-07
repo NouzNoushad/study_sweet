@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:promodoro_app/core/utils/colors.dart';
+import 'package:promodoro_app/config/routes/route_constant.dart';
 import 'package:promodoro_app/core/utils/strings.dart';
 import 'package:promodoro_app/feature/cubit/theme_mode/theme_mode_cubit.dart';
+import 'package:promodoro_app/feature/view/promodoro_home/components/action_buttons.dart';
 import 'package:promodoro_app/feature/view/promodoro_home/components/timer.dart';
 import 'package:promodoro_app/feature/view/promodoro_home/components/timer_controls.dart';
+import 'package:promodoro_app/feature/widget/app_bar.dart';
 
 class PromodoroHomeScreen extends StatelessWidget {
   const PromodoroHomeScreen({super.key});
@@ -12,30 +14,35 @@ class PromodoroHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppStrings.appTitle,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        automaticallyImplyLeading: false,
-        elevation: 0.0,
-        actions: [
+      appBar: promodoroAppBar(
+        context,
+        AppStrings.appTitle,
+        [
           BlocBuilder<ThemeModeCubit, ThemeModeState>(
             builder: (context, state) {
               state as ThemeChangedState;
-              return IconButton(
+              return AppBarActionButtons(
+                  icon: state.isDarkMode ? Icons.dark_mode : Icons.light_mode,
                   onPressed: () {
                     context.read<ThemeModeCubit>().switchThemeMode();
                   },
-                  icon: Icon(
-                    state.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                    color: state.isDarkMode
-                        ? ColorPicker.lightBackgroundColor
-                        : ColorPicker.darkBackgroundColor,
-                  ));
+                  isDarkMode: state.isDarkMode);
             },
           ),
+          BlocBuilder<ThemeModeCubit, ThemeModeState>(
+            builder: (context, state) {
+              state as ThemeChangedState;
+              return AppBarActionButtons(
+                  icon: Icons.settings,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(RouteConstants.settings);
+                  },
+                  isDarkMode: state.isDarkMode);
+            },
+          ),
+          
         ],
+        false,
       ),
       body: const Column(children: [
         StudyTimer(),

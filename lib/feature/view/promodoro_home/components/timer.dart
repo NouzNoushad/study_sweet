@@ -16,14 +16,19 @@ class StudyTimer extends StatelessWidget {
         return Expanded(
             flex: 3,
             child: Center(
-                child: timerContainer(context, timer.currentTimeValue,
-                    timer.session, timer.currentTime)));
+                child: timerContainer(
+                    context,
+                    timer.currentTimeValue,
+                    timer.session,
+                    timer.currentTime,
+                    timer.progressTime,
+                    timer.studyStatus)));
       },
     );
   }
 
   Widget timerContainer(BuildContext context, String displayTime, int session,
-          int currentTime) =>
+          int currentTime, int progressTime, String studyStatus) =>
       SizedBox(
         height: context.height * 0.3,
         width: context.height * 0.3,
@@ -31,7 +36,7 @@ class StudyTimer extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             CircularProgressIndicator(
-                value: 1 - currentTime / 30,
+                value: 1 - currentTime / 60 / progressTime,
                 strokeWidth: 8,
                 strokeCap: StrokeCap.round,
                 color: ColorPicker.progressColor,
@@ -41,7 +46,7 @@ class StudyTimer extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Study',
+                  Text(studyStatus,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             fontWeight: FontWeight.w500,
                           )),
