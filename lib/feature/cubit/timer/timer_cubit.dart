@@ -2,18 +2,28 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:promodoro_app/feature/cubit/settings_cubit/settings_cubit.dart';
 
 part 'timer_state.dart';
 
 class TimerCubit extends Cubit<TimerState> {
-  TimerCubit()
-      : super(const UpdateTimerState('02:00', 2 * 60, false, 1, 2, 'Study'));
+  TimerCubit({required SettingsCubit settingsCubit})
+      : _settingsCubit = settingsCubit,
+        super(UpdateTimerState(
+            '02:00',
+            (settingsCubit.studyDuration * 60).round(),
+            false,
+            1,
+            settingsCubit.studyDuration.round(),
+            'Study'));
+  final SettingsCubit _settingsCubit;
 
   Timer? _timer;
   bool _isPlaying = false;
   bool _isBreakTime = false;
-  int _currentTime = 2 * 60;
-  int _progressTime = 2;
+  int _currentTime = 1 * 60;
+  int _progressTime = 1;
   String _currentTimeValue = '02:00';
   int _session = 1;
 
@@ -32,6 +42,7 @@ class TimerCubit extends Cubit<TimerState> {
   String get studyStatus => _isBreakTime ? 'Break' : 'Study';
 
   _runTimer(int time) {
+    print('study: ${(_settingsCubit.studyDuration * 60).round()}');
     if (_currentTime >= 0) {
       var currentTimeInMinutes = _currentTime ~/ 60;
       var currentTimeInSeconds = _currentTime % 60;
@@ -44,12 +55,12 @@ class TimerCubit extends Cubit<TimerState> {
       _isBreakTime = !_isBreakTime;
       if (_isBreakTime) {
         if (_session < 4) {
-          _currentTime = 1 * 60;
-          _progressTime = 1;
+          _currentTime = (_settingsCubit.breakDuration * 60).round();
+          _progressTime = _settingsCubit.breakDuration.round();
         }
       } else if (_session < 4) {
-        _currentTime = 2 * 60;
-        _progressTime = 2;
+        _currentTime = (_settingsCubit.studyDuration * 60).round();
+        _progressTime = _settingsCubit.studyDuration.round();
         _session++;
       }
     }

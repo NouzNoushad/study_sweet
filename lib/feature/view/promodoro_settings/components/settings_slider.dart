@@ -3,8 +3,17 @@ import 'package:promodoro_app/core/utils/extensions.dart';
 
 class SettingsSlider extends StatelessWidget {
   final String title;
+  final double max;
+  final double min;
   final double value;
-  const SettingsSlider({super.key, required this.title, required this.value});
+  final void Function(double)? onChanged;
+  const SettingsSlider(
+      {super.key,
+      required this.title,
+      required this.max,
+      required this.min,
+      required this.value,
+      required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -19,24 +28,28 @@ class SettingsSlider extends StatelessWidget {
         ),
         Stack(
           children: [
-            Slider(value: value, onChanged: (value) {}),
+            Slider(
+                value: value.toDouble(),
+                max: max,
+                min: min,
+                onChanged: onChanged),
             Positioned(
               bottom: 0,
               left: 0,
               child: SizedBox(
                 width: context.width,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '1 min',
+                        '${min.toInt()} min',
                       ),
                       Text(
-                        '60 min',
+                        '${max.toInt()}min',
                       ),
                     ],
                   ),
