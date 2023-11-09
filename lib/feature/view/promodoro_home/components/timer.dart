@@ -30,7 +30,7 @@ class StudyTimer extends StatelessWidget {
 
   Widget timerContainer(BuildContext context, String displayTime, int session,
       int currentTime, int progressTime, String studyStatus) {
-    var settings = BlocProvider.of<SettingsCubit>(context);
+    print('/////////// curr: $currentTime, pro: $progressTime');
     return SizedBox(
       height: context.height * 0.3,
       width: context.height * 0.3,
@@ -38,7 +38,7 @@ class StudyTimer extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           CircularProgressIndicator(
-              value: 1 - currentTime * 60,
+              value: 1 - currentTime / progressTime,
               strokeWidth: 8,
               strokeCap: StrokeCap.round,
               color: ColorPicker.progressColor,

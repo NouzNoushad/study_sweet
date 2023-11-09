@@ -8,9 +8,9 @@ sealed class SettingsState extends Equatable {
 }
 
 class UpdateSettings extends SettingsState {
-  final double studyDuration;
-  final double breakDuration;
-  final double sessions;
+  final int studyDuration;
+  final int breakDuration;
+  final int sessions;
 
   const UpdateSettings(this.studyDuration, this.breakDuration, this.sessions);
 

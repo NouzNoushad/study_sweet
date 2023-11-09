@@ -10,20 +10,17 @@ part 'timer_state.dart';
 class TimerCubit extends Cubit<TimerState> {
   TimerCubit({required SettingsCubit settingsCubit})
       : _settingsCubit = settingsCubit,
-        super(UpdateTimerState(
-            '02:00',
-            (settingsCubit.studyDuration * 60).round(),
-            false,
-            1,
-            settingsCubit.studyDuration.round(),
-            'Study'));
+        super(
+            const UpdateTimerState('02:00', 2 * 60, false, 1, 2 * 60, 'Study'));
   final SettingsCubit _settingsCubit;
 
   Timer? _timer;
   bool _isPlaying = false;
   bool _isBreakTime = false;
-  int _currentTime = 1 * 60;
-  int _progressTime = 1;
+  int _currentTime = 2 * 60;
+  int _studyTime = 2 * 60;
+  int _breakTime = 1 * 60;
+  int _sessionTime = 1 * 60;
   String _currentTimeValue = '02:00';
   int _session = 1;
 
@@ -31,7 +28,9 @@ class TimerCubit extends Cubit<TimerState> {
   bool get isPlaying => _isPlaying;
   bool get isBreakTime => _isBreakTime;
   int get currentTime => _currentTime;
-  int get progressTime => _progressTime;
+  int get studyTime => _studyTime;
+  int get breakTime => _breakTime;
+  int get sessionTime => _sessionTime;
   int get session => _session;
   String get currentTimeValue => _currentTimeValue;
 
@@ -41,32 +40,33 @@ class TimerCubit extends Cubit<TimerState> {
 
   String get studyStatus => _isBreakTime ? 'Break' : 'Study';
 
+  int get maxTime => (_isBreakTime ? _breakTime : _studyTime);
+
   _runTimer(int time) {
-    print('study: ${(_settingsCubit.studyDuration * 60).round()}');
+    print('study: $_studyTime, current: $_currentTime');
     if (_currentTime >= 0) {
       var currentTimeInMinutes = _currentTime ~/ 60;
       var currentTimeInSeconds = _currentTime % 60;
       _currentTime--;
       _currentTimeValue =
           '${currentTimeInMinutes.toString().padLeft(2, '0')}:${currentTimeInSeconds.toString().padLeft(2, '0')}';
-      emit(UpdateTimerState(_currentTimeValue, _currentTime, _isPlaying,
-          _session, _progressTime, studyStatus));
+      emit(UpdateTimerState(currentTimeValue, currentTime, isPlaying, session,
+          maxTime, studyStatus));
     } else {
       _isBreakTime = !_isBreakTime;
       if (_isBreakTime) {
         if (_session < 4) {
-          _currentTime = (_settingsCubit.breakDuration * 60).round();
-          _progressTime = _settingsCubit.breakDuration.round();
+          _currentTime = _breakTime;
         }
       } else if (_session < 4) {
-        _currentTime = (_settingsCubit.studyDuration * 60).round();
-        _progressTime = _settingsCubit.studyDuration.round();
+        _currentTime = _studyTime;
         _session++;
       }
     }
   }
 
   void _startTimer() {
+    _currentTime = _studyTime;
     if (!_isPlaying) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         _runTimer(_currentTime);
@@ -75,27 +75,46 @@ class TimerCubit extends Cubit<TimerState> {
     } else {
       _timer?.cancel();
       _isPlaying = false;
-      emit(UpdateTimerState(_currentTimeValue, _currentTime, _isPlaying,
-          _session, _progressTime, studyStatus));
+      emit(UpdateTimerState(currentTimeValue, currentTime, isPlaying, session,
+          maxTime, studyStatus));
     }
   }
 
   void _skipTimer() {
     if (_isBreakTime) {
-      _currentTime = 2 * 60;
-      _progressTime = 2;
+      _currentTime = _studyTime;
     } else {
-      _currentTime = 1 * 60;
-      _progressTime = 1;
+      _currentTime = _breakTime;
     }
     _isBreakTime = !_isBreakTime;
   }
 
   void _resetTimer() {
-    _timer?.cancel();
-    _currentTimeValue = '00:30';
-    _isPlaying = false;
-    emit(UpdateTimerState(_currentTimeValue, _currentTime, _isPlaying, _session,
-        _progressTime, studyStatus));
+    print('/////////reset Timer, ${_settingsCubit.studyDuration}');
+    _currentTime = maxTime;
+    _currentTimeValue = _currentTimeValue;
+    emit(UpdateTimerState(currentTimeValue, currentTime, isPlaying, session,
+        maxTime, studyStatus));
+  }
+
+  void updateStudyTimer(int st) {
+    _studyTime = st * 60;
+    print('cur: ;::: $_studyTime');
+    emit(UpdateTimerState(currentTimeValue, currentTime, isPlaying, session,
+        maxTime, studyStatus));
+  }
+
+  void updateBreakTimer(int br) {
+    _breakTime = br * 60;
+    print('br: ;::: $_breakTime');
+    emit(UpdateTimerState(currentTimeValue, currentTime, isPlaying, session,
+        maxTime, studyStatus));
+  }
+
+  void updateSessionTimer(int ss) {
+    _sessionTime = ss * 60;
+    print('ss: ;::: $_sessionTime');
+    emit(UpdateTimerState(currentTimeValue, currentTime, isPlaying, session,
+        maxTime, studyStatus));
   }
 }
