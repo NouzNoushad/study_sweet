@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:promodoro_app/feature/cubit/settings_cubit/settings_cubit.dart';
 import 'package:promodoro_app/feature/cubit/theme_mode/theme_mode_cubit.dart';
 import 'package:promodoro_app/feature/cubit/timer/timer_cubit.dart';
 
@@ -16,10 +15,7 @@ class BlocWidget extends StatelessWidget {
           create: (context) => ThemeModeCubit(),
         ),
         BlocProvider(
-          create: (context) => TimerCubit(settingsCubit: SettingsCubit()),
-        ),
-        BlocProvider(
-          create: (context) => SettingsCubit(),
+          create: (context) => TimerCubit(),
         ),
       ],
       child: child,

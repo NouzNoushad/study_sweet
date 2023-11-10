@@ -15,9 +15,12 @@ class TimerControls extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
               IconButton(
-                  onPressed: () {
-                    timer.resetTimer;
-                  },
+                  onPressed: context.read<TimerCubit>().currentTime ==
+                          context.read<TimerCubit>().maxTime
+                      ? null
+                      : () {
+                          timer.resetTimer;
+                        },
                   icon: const Icon(Icons.replay)),
               IconButton(
                   onPressed: () {

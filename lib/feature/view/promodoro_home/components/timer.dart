@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promodoro_app/core/utils/extensions.dart';
-import 'package:promodoro_app/feature/cubit/settings_cubit/settings_cubit.dart';
 import 'package:promodoro_app/feature/cubit/timer/timer_cubit.dart';
 
 import '../../../../core/utils/colors.dart';

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:promodoro_app/config/routes/route_constant.dart';
 import 'package:promodoro_app/core/utils/strings.dart';
 import 'package:promodoro_app/feature/cubit/theme_mode/theme_mode_cubit.dart';
+import 'package:promodoro_app/feature/cubit/timer/timer_cubit.dart';
 import 'package:promodoro_app/feature/view/promodoro_home/components/action_buttons.dart';
 import 'package:promodoro_app/feature/view/promodoro_home/components/timer.dart';
 import 'package:promodoro_app/feature/view/promodoro_home/components/timer_controls.dart';
@@ -29,18 +30,7 @@ class PromodoroHomeScreen extends StatelessWidget {
                   isDarkMode: state.isDarkMode);
             },
           ),
-          BlocBuilder<ThemeModeCubit, ThemeModeState>(
-            builder: (context, state) {
-              state as ThemeChangedState;
-              return AppBarActionButtons(
-                  icon: Icons.settings,
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(RouteConstants.settings);
-                  },
-                  isDarkMode: state.isDarkMode);
-            },
-          ),
-          
+        
         ],
         false,
       ),
